@@ -1,3 +1,5 @@
 nbproject
 Capfile
 config
+node_modules
+dist
