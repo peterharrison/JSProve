@@ -27,15 +27,17 @@ module.exports = function(grunt) {
         }
       }
     },
-    cachebreaker: {
-      production: {
-        options: {
-          match: ['js/jsprove.min.js', 'css/jsprove.min.css'],
-          position: 'filename'
-        },
-        files: {
+    cacheBust: {
+      options: {
+        encoding: 'utf8',
+        algorithm: 'md5',
+        length: 16,
+        deleteOriginals: true
+      },
+      assets: {
+        files: [{
           src: ['dist/index.html']
-        }
+        }]
       }
     }
   });
@@ -47,12 +49,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   // Load the cachebusting plugin
-  grunt.loadNpmTasks('grunt-cache-breaker');
+  grunt.loadNpmTasks('grunt-cache-bust');
 
   // Load the file copying plugin
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task(s).
-  grunt.registerTask('default', ['copy', 'uglify', 'cssmin', 'cachebreaker']);
+  grunt.registerTask('default', ['copy', 'uglify', 'cssmin', 'cacheBust']);
 
 };
