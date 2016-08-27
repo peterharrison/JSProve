@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     copy: {
       main: {
-        src: ['music/**', 'lib/**', 'index.html'],
+        src: ['music/**', 'lib/**'],
         dest: 'dist/',
         expand: true
       }
@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     uglify: {
       build: {
         src: 'js/*.js',
-        dest: 'dist/js/jsprove.min.js'
+        dest: 'dist/js/jsprove.js'
       }
     },
     cssmin: {
@@ -23,14 +23,34 @@ module.exports = function(grunt) {
       },
       target: {
         files: {
-          'dist/css/jsprove.min.css': ['css/*.css']
+          'dist/css/jsprove.css': ['css/*.css']
+        }
+      }
+    },
+    processhtml: {
+      options: {
+      },
+      dist: {
+        files: {
+          'dist/index.html': ['index.html']
+        }
+      }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {
+          'dist/index.html': 'dist/index.html'
         }
       }
     },
     cachebreaker: {
       production: {
         options: {
-          match: ['js/jsprove.min.js', 'css/jsprove.min.css'],
+          match: ['js/jsprove.js', 'css/jsprove.css'],
           position: 'filename'
         },
         files: {
@@ -52,7 +72,13 @@ module.exports = function(grunt) {
   // Load the file copying plugin
   grunt.loadNpmTasks('grunt-contrib-copy');
 
+  // Load the plugin that provides the "htmlmin" task.
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
+
+  // Load the plugin that provides the "processhtml" task.
+  grunt.loadNpmTasks('grunt-processhtml');
+
   // Default task(s).
-  grunt.registerTask('default', ['copy', 'uglify', 'cssmin', 'cachebreaker']);
+  grunt.registerTask('default', ['copy', 'uglify', 'cssmin', 'processhtml', 'htmlmin', 'cachebreaker']);
 
 };
